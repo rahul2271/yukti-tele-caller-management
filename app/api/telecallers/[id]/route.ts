@@ -8,20 +8,25 @@ import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 
 // PUT /api/telecallers/[id] — update info or change password
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== 'admin')
     return NextResponse.json({ error: 'Admin only' }, { status: 403 })
 
+  const { id } = await params
   const body = await req.json()
   await connectDB()
 
-  // Password change request
+  // Password change
   if (body.newPassword) {
-    const parsed = z.object({ newPassword: z.string().min(8, 'Min 8 characters') }).safeParse(body)
-    if (!parsed.success) return NextResponse.json({ error: parsed.error.errors[0].message }, { status: 400 })
+    const parsed = z.object({ newPassword: z.string().min(8) }).safeParse(body)
+    if (!parsed.success)
+      return NextResponse.json({ error: parsed.error.errors[0].message }, { status: 400 })
     const hashed = await bcrypt.hash(parsed.data.newPassword, 10)
-    await User.findByIdAndUpdate(params.id, { password: hashed })
+    await User.findByIdAndUpdate(id, { password: hashed })
     return NextResponse.json({ success: true, message: 'Password updated' })
   }
 
@@ -32,30 +37,33 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     isActive: z.boolean().optional(),
   }).safeParse(body)
 
-  if (!parsed.success) return NextResponse.json({ error: 'Validation failed' }, { status: 400 })
+  if (!parsed.success)
+    return NextResponse.json({ error: 'Validation failed' }, { status: 400 })
 
-  const updated = await User.findByIdAndUpdate(params.id, parsed.data, { new: true })
+  const updated = await User.findByIdAndUpdate(id, parsed.data, { new: true })
   if (!updated) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
   return NextResponse.json({ success: true, data: updated })
 }
 
-// DELETE /api/telecallers/[id] — deactivate (soft) or hard delete
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+// DELETE /api/telecallers/[id] — soft delete (deactivate) or hard delete
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== 'admin')
     return NextResponse.json({ error: 'Admin only' }, { status: 403 })
 
+  const { id } = await params
   const hard = new URL(req.url).searchParams.get('hard') === 'true'
   await connectDB()
 
   if (hard) {
-    // Hard delete — remove user + all their entries
-    await User.findByIdAndDelete(params.id)
-    await DailyEntry.deleteMany({ telecallerId: params.id })
+    await User.findByIdAndDelete(id)
+    await DailyEntry.deleteMany({ telecallerId: id })
   } else {
-    // Soft delete — just deactivate
-    await User.findByIdAndUpdate(params.id, { isActive: false })
+    await User.findByIdAndUpdate(id, { isActive: false })
   }
 
   return NextResponse.json({ success: true })

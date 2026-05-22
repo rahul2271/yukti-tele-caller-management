@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['mongoose'],
-  },
+  // In Next.js 15, moved out of experimental
+  serverExternalPackages: ['mongoose'],
 }
 module.exports = nextConfig
