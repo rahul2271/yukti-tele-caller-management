@@ -16,9 +16,9 @@ export default async function TelecallerDashboard() {
   const session = await getServerSession(authOptions)
   const entry = await getTodayEntry(session!.user.id)
 
-  const totalLeads     = entry?.entries?.reduce((s, e) => s + (e.leadsCount      ?? 0), 0) ?? 0
-  const totalConverted = entry?.entries?.reduce((s, e) => s + (e.convertedCount  ?? 0), 0) ?? 0
-  const totalRevenue   = entry?.entries?.reduce((s, e) => s + ((e as any).revenueGenerated ?? 0), 0) ?? 0
+  const totalLeads     = entry?.entries?.reduce((s: number, e) => s + (e.leadsCount      ?? 0), 0) ?? 0
+  const totalConverted = entry?.entries?.reduce((s: number, e) => s + (e.convertedCount  ?? 0), 0) ?? 0
+  const totalRevenue   = entry?.entries?.reduce((s: number, e) => s + ((e as any).revenueGenerated ?? 0), 0) ?? 0
   const cr = conversionRate(totalConverted, totalLeads)
   const filled = !!entry
 

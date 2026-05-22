@@ -56,9 +56,9 @@ export default function EntryPage() {
   const { fields, append, remove } = useFieldArray({ control, name: 'entries' })
   const entries = watch('entries')
 
-  const totalLeads     = entries.reduce((s, e) => s + (Number(e.leadsCount)       || 0), 0)
-  const totalConverted = entries.reduce((s, e) => s + (Number(e.convertedCount)   || 0), 0)
-  const totalRevenue   = entries.reduce((s, e) => s + (Number(e.revenueGenerated) || 0), 0)
+  const totalLeads     = entries.reduce((s: number, e) => s + (Number(e.leadsCount)       || 0), 0)
+  const totalConverted = entries.reduce((s: number, e) => s + (Number(e.convertedCount)   || 0), 0)
+  const totalRevenue   = entries.reduce((s: number, e) => s + (Number(e.revenueGenerated) || 0), 0)
 
   useEffect(() => {
     fetch('/api/diseases').then(r => r.json()).then(d => setDiseases(d.data ?? []))

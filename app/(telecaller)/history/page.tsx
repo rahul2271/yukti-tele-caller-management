@@ -45,9 +45,9 @@ export default function HistoryPage() {
       ) : (
         <div className="space-y-3">
           {entries.map(entry => {
-            const leads     = entry.entries.reduce((s, e) => s + (e.leadsCount       ?? 0), 0)
-            const converted = entry.entries.reduce((s, e) => s + (e.convertedCount   ?? 0), 0)
-            const revenue   = entry.entries.reduce((s, e) => s + (e.revenueGenerated ?? 0), 0)  // null-safe
+            const leads     = entry.entries.reduce((s: number, e) => s + (e.leadsCount       ?? 0), 0)
+            const converted = entry.entries.reduce((s: number, e) => s + (e.convertedCount   ?? 0), 0)
+            const revenue   = entry.entries.reduce((s: number, e) => s + (e.revenueGenerated ?? 0), 0)  // null-safe
             const isOpen    = expanded === entry._id
 
             return (
