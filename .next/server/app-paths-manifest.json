@@ -1,0 +1,16 @@
+{
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/entries/route": "app/api/entries/route.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/api/diseases/route": "app/api/diseases/route.js",
+  "/api/telecallers/route": "app/api/telecallers/route.js",
+  "/api/analytics/route": "app/api/analytics/route.js",
+  "/(telecaller)/entry/page": "app/(telecaller)/entry/page.js",
+  "/(telecaller)/dashboard/page": "app/(telecaller)/dashboard/page.js",
+  "/(telecaller)/history/page": "app/(telecaller)/history/page.js",
+  "/(admin)/admin/analytics/page": "app/(admin)/admin/analytics/page.js",
+  "/(admin)/admin/dashboard/page": "app/(admin)/admin/dashboard/page.js",
+  "/(admin)/admin/reports/page": "app/(admin)/admin/reports/page.js",
+  "/(admin)/admin/telecallers/page": "app/(admin)/admin/telecallers/page.js",
+  "/(admin)/admin/diseases/page": "app/(admin)/admin/diseases/page.js"
+}
