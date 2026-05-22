@@ -81,8 +81,8 @@ export default function AdminReportsPage() {
       {/* Summary strip */}
       {entries.length > 0 && (() => {
         const totalGiven     = entries.reduce((s: number, e) => s + e.totalLeadsGiven, 0)
-        const totalLeads     = (entries: any[]).reduce((s: number, e: any) => s + e.entries.reduce((a: number, r: any) => a + r.leadsCount, 0), 0)
-        const totalConverted = (entries: any[]).reduce((s: number, e: any) => s + e.entries.reduce((a: number, r: any) => a + r.convertedCount, 0), 0)
+        const totalLeads     = entries.reduce((s: number, e: any) => s + e.entries.reduce((a: number, r: any) => a + r.leadsCount, 0), 0)
+        const totalConverted = entries.reduce((s: number, e: any) => s + e.entries.reduce((a: number, r: any) => a + r.convertedCount, 0), 0)
         return (
           <div className="grid grid-cols-4 gap-3 mb-4">
             {[
